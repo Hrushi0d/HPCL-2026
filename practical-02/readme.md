@@ -8,6 +8,6 @@ gcc -fopenmp .\practical-02\practical-02-1.c -o practical-01\practical-02-1
 Statement - 2
 
 ```bash
-gcc -fopenmp .\practical-02\practical-02-2.c -o practical-01\practical-02-1
+gcc -fopenmp .\practical-02\practical-02-2.c -o practical-01\practical-02-2
 .\practical-01\practical-02-2.exe
 ```
