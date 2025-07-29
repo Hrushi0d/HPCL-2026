@@ -8,18 +8,17 @@ static long num_steps = 100000000; // Higher steps = better precision
 double step;
 
 int main() {
-    int i;
-    double x, pi, sum = 0.0;
+    double x, sum = 0.0;
     step = 1.0 / (double) num_steps;
 
     // Parallel for loop with reduction to avoid race conditions
     #pragma omp parallel for private(x) reduction(+:sum)
-    for (i = 0; i < num_steps; i++) {
+    for (int i = 0; i < num_steps; i++) {
         x = (i + 0.5) * step;
         sum += 4.0 / (1.0 + x * x);
     }
 
-    pi = step * sum;
+    const double pi = step * sum;
 
     printf("Approximated value of Pi = %.15f\n", pi);
     return 0;
