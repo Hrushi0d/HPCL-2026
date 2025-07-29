@@ -1,21 +1,25 @@
+//
+// Created by lenovo on 7/29/2025.
+//
 #include <stdio.h>
 #include <omp.h>
 
+static long num_steps = 100000000; // Higher steps = better precision
+double step;
+
 int main() {
-    const int N = 1000;
-    float a[N], b[N];
-    const float scalar = 2.4;
-    for (int i = 0; i < N; i++) {
-        a[i] = i * scalar;
+    double x, sum = 0.0;
+    step = 1.0 / (double) num_steps;
+
+    // Parallel for loop with reduction to avoid race conditions
+#pragma omp parallel for private(x) reduction(+:sum)
+    for (int i = 0; i < num_steps; i++) {
+        x = (i + 0.5) * step;
+        sum += 4.0 / (1.0 + x * x);
     }
 
-    #pragma omp parallel for
-    for (int i = 0; i < N; i++) {
-        b[i] = a[i] + scalar;
-    }
-    printf("a[] + scalar = b[]\n\n");
-    for (int i = 0; i < 10; i++) {
-        printf("a[%d] = %2f\t\t b[%d] = %2f\n", i, a[i], i, b[i]);
-    }
+    const double pi = step * sum;
+
+    printf("Approximated value of Pi = %.15f\n", pi);
     return 0;
 }
